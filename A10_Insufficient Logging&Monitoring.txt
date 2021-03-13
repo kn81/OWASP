@@ -1,0 +1,33 @@
+
+Exampes of situations wherelogging is recommended
+1.Logins & failed logins
+2. Server warnings
+3. Enable Error messages
+4. Enable Alert threshold
+
+sufficient content in log file
+Log file should have good format
+integrety constraints on logs ( if log file is modified , able to identify what changes have done)
+Response plan- regularly monitor logs
+Firewall implementation
+
+If an attacker has installed cryptominer on the server the CPU load for that process will drastically increase
+By constantly monitoring the CPU load on the server, such activities can be detected and appropriate action taken
+If the attacker starts downloading a lot of data from the server this will show up as an unusual amount of outgoing network traffic
+By monitoring network traffic it is possible to detect data extraction and there after prevent it.
+
+Most breaches are discovered after few days,this makes it very clear that many are not using logging & monitoring 
+When cleaning up after a hack it is important to know what the attackers have done
+
+Detectify -->tool
+
+Log severity levels
+Emergency-> system unstable
+Alert- immediate action required
+Critical-> Functionality affected
+Error-> Error exists that can affect functionality
+Warning- Functionality could be affected
+Notification- Information about normal events
+Information- General system information
+Debug- Debug log messages
+

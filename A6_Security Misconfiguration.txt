@@ -1,0 +1,25 @@
+what is it?
+
+Improper server or application configuration leading to various flaws
+1. Debugging enabled
+2. Incorrect folder permissions
+3. Using default accounts or passwords
+4. Setup configuration pages enabled
+
+Counter measures
+The principle of least privilige Everything off by default
+Ensure that web server is configured according to the secure configuration & hardening guidelines
+1. Disable communication channels
+2. Disable debugging
+3. Disable use of default accounts/ passwords
+4. Configure server to prevent unauthorised access directory using ETC
+
+security derectives->HSTS, H PKP X-Frames options to arden security misconfigurations
+
+How to find secret/hidden pages
+Using Burp suite try to find hidden/secret web pages using brute force method-> intercept web app pages request , send to intruder tab, select page as payload point then pass directory word list file as payload or manually add page names, remove = sign in payload encoding section.
+
+In KALI linux list of word files available at /usr/share/wordlist/
+
+
+

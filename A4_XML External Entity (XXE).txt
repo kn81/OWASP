@@ -1,0 +1,30 @@
+
+Entities-> are features in DTD
+
+Where to look for / How to identify XXE vulnerabilities
+1. Application accepts XML directly or XML uploads or insert untrusted data into XML documents which is then parsed by XML processor
+2. Look for SOAP based web services
+3. XXE attack may leads to DoS attack
+
+XXE attack can by pass authentification & authorization ,Example if an last name field of user profile is replace with value of "c:/windows/win.ini" throught XXE, once user logged in probably he can see reflected data)
+
+How to perform an XXE attaxk
+Example if an application forgot password functionality using XML file type, then an attacker intercept the request via Burp suite tool and add below line in request header
+<XML version="1.0" url-encoding="utf-0">
+<D!OCTYPE attack [
+<!ENTITY xxe SYSTEM "file://etc/passwd" ]>
+<Forgotpass>&xxe</forgotpass>
+
+CDATA attack:  "character data", whatever specified inside CDATA will not be parsed by xml parser, so attacker can inject malicious java script code
+
+XXE also possible to lead DoS attack: example one ENTITY refers to multiple ENTITIES recursively so it occupies more memory/resources in system
+remediation for XXE DoS is limit number of resources
+
+Learn more on parameterized ENTITY
+
+
+Optical Character Recognition (OCR)
+Tesseract is the most accurate OCR
+hkhrais@Hkhrais:~$ sudo apt-get install tesseract-ocr
+Tesseract is not very flexible about the format of its input images. It will only accept TIFF images
+

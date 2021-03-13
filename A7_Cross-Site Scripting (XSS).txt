@@ -1,0 +1,37 @@
+what is XSS?
+1. Cross Site Scripting known as a code injection attack allowing the injection of malicious code into a website.
+2. XSS is currently one of the most common website attacks with almost every website requiring the user to have javascript turned on.
+
+when you can get your xss permanently on a website all those who visit that page will have the javascript executed by their browser
+
+What can it do ?
+1. Malicious javascript can be used to do all sorts of malicious tasks.
+2. it can be used to steal users cookie, allowing for someone to use website pretending to be that user.
+3. Malicious Javascript can modify the page to make it look different or behave different 
+4. It can even send you to another website taking data with you.
+
+Non persistent scripting attack
+these scipts are not persistent on website
+The attack only affects the user running the script
+It may indicate that website creater may have forget to protect input fields
+A Non persistent script can also be referred to as reflected XSS
+
+Reflected attack?
+Reflected is harnessed by attaching the malicious script at the end of URL/link, 
+Though it may be obvious to see code on the end of a URL, techniques of hiding it are possible.
+Also with the service of link shortening services this can be very deadly
+
+Reflected attack what can it do?
+1. Redirect to a phishing
+2. Steal cookie information
+3. Force the user to make an action
+
+javascript:document.querySelectorAll('.Upvote').forEach((b)=>{if(b.getAttribute('action_target') == '{"aid": 49528370, "type": "answer"}'){b.click()}})
+
+Persistent script?
+Usually having the malicious code stored in the website database
+
+Finding inject locations
+comments,submission forms, contact forms, posts, uploads etc
+
+Malicious attack

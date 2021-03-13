@@ -1,0 +1,39 @@
+Serialization is the process of turning some object into a data format that can be restored later
+serialization of objects is done to save them to storage or to send as part of communication
+Deserialization is exactly opposit of serialization this which takes structured data from some format and rebuilds it into objects.
+
+Serialization is is a way to store an object or structure as text that can be easily stored and transmitted
+Example: would be a game that stores the state locally as an object where a game is finished the state wold be sent to the server that logs all the high scores
+it is not possible to directly send the object which is it is serialized
+the server now retrieves thedata from the client but to do anything with the data the server needs to reverse the serialization process this is called deserialization
+
+Developers know to sanitize normal user input as it could contain anuthing but as serialized data is handled as an object this is often forgotton.
+username    Game42
+Timespent    12:13
+score	    :450
+
+with the gamestate object in mind, think about the following SQL query
+"SELECT score FROM highscore WHERE user = '"= gamestate.username+'";"
+An attacker can inject sql injection payload directly into a serialized object
+E.g
+{"username":"'or'1'='1","TimeSpent":"00:43:01,"score":"1443"}
+the server would deserialize the data and then use it as the object 
+
+vulnerable?
+1. If the filesystem is using serialization
+2. the application or API accepts and deserializes hostile objects supplied by an attacker
+3. Distributed application or those that need to store state on clients or the filesystem may be using object serialization Applications that rely on the client maintaining state are likely to allow for tampering of serialized data
+
+serialization used for?
+1. Transforming data through wires
+2. method of storing data in databases , on hard disk
+3. Method of remote procedure calls , EG, SOAP
+
+Remediation
+Do not accept serialized objects from untrusted sources
+
+if not possible
+1. Encrypt serialization object to prevent hostile object creation or Data tampering
+2. Isolate code that deserializes such that it runs in ery low privilege environment and monitor serialization.
+
+

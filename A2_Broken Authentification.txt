@@ -1,0 +1,32 @@
+Interview Notes
+
+Broken Authentification check lists
+1. Cookies reuse after users session close
+2. Password reset ( login to application with 2 different browsers, in 1 browser do password reset, and check still other session is active in another browser)
+3. Login forms vulerability ( try to brute force with sql injection, check page source form, see login & password field)
+4. user Logout  ( attacker click on back button click)
+5. Password guessing Attack ( using Burp suite), weak passwords
+6. Bypass admin authentication (modifying URL like /admin/dashboard.php
+7. Bypassing JSON cookies by modifying cookie
+8. Login as any user, if URL contains user ID, change ID and refresh pagesee other user profile page appears?
+
+session Management
+Administrative portal- modify URL to reach admin page
+cookie HTTP only
+cookie insecure
+session ID in URL
+Session ID guessing, weak session ID
+
+  Authentication- process of validating a user
+  Authorization -> restricting or proving different level of accessibility on resources/application
+  Multifactor Authentification
+  False positive
+
+
+
+
+
+
+
+
+

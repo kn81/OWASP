@@ -1,0 +1,54 @@
+
+1. URL manipulation
+   https://samplesite.com/deleteProfilePic=127
+
+	Remediation
+	1. use random generated  ID's containing combination of both letters & numbers
+	2. Proper access control-user must be authorized for the information before server provides.
+
+   if application is vulnerable to IDOR (INSECURE DIRECT OBJECT REFERENCE)
+    https://samplesite.com/deleteProfilePic=128
+	Impact of IDOR vulnerabilities
+	IDOR vulnerabilities seems as “VARIES DEPENDING ON IMPACT” in Bugcrowd VRT because of their impact totally depend your submitted bug.
+
+
+2. Directory traversal
+
+3. update/delete different user profile-> intecept update functionality of application tamper the parameter ( Example update with new email)
+4. static pages & forceful browsing
+	GET admin/viewTransactions --Access denied
+	GET ADMIN/viewTransactions --Access Granted
+
+	GET Documents/1234.pdf
+
+Parameter manipulation & Logic Flaws
+Logic Flaws-> are a varient of MFLAC, involving a multi step workflow where an attacker can skip steps of that workflow to his pr her advantage
+
+MFLAC-> missing functionality Logic Control-->Description
+If the authentication check in sensitive request handlers is insufficient or non-existent the vulnerability can be categorised as Missing Function Level Access Control.
+https://support.portswigger.net/customer/portal/articles/1965720-using-burp-to-test-for-missing-function-level-access-control
+create function MFLAC matrix
+
+How Do I Prevent 'Missing Function Level Access Control'?
+Your application should have a consistent and easy to analyze authorization module that is invoked from all of your business functions. Frequently, such protection is provided by one or more components external to the application code.
+
+Think about the process for managing entitlements and ensure you can update and audit easily. Don’t hard code.
+The enforcement mechanism(s) should deny all access by default, requiring explicit grants to specific roles for access to every function.
+If the function is involved in a workflow, check to make sure the conditions are in the proper state to allow access.
+NOTE: Most web applications don’t display links and buttons to unauthorized functions, but this “presentation layer access control” doesn’t actually provide protection. You must also implement checks in the controller or business logic.
+
+Example Attack Scenarios
+Scenario #1: The attacker simply force browses to target URLs. The following URLs require authentication. Admin rights are also required for access to the admin_getappInfo page.
+http://example.com/app/getappInfo
+http://example.com/app/admin_getappInfo
+
+
+But we have created a list about IDOR vulnerabilities’ impacts based on our experience as follows.
+P1 – Account takeover, Access very important data (such as credit card)
+P2 – Change / delete another users’ public data, Access private / public important data (such as tickets, invoice, payment information)
+P3 – Access / delete / change private data (limited personal info: name, adress etc.)
+P4 – Access any unimportant data
+
+
+
+

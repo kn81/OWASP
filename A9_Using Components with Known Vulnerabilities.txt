@@ -1,0 +1,19 @@
+
+Scan the web application using burp suite and check for (third party components) versions of web servers, Operating systems, firewals, if these versions have any vulnerabilities check in CVE, then update with newer versions
+
+
+Remedies
+1. Remove any components that you dont need
+2. you should have configuration control of you components and know exactly what versions you are using rather than blindly updating these
+3. Should keep on top of updates especially security updates released formajor components but this should be done in controlled way and not just update is available
+4. use CVE database for known vulnerabilities using scanner
+5. Have a process to make urgent updates
+
+CVE- common vulnerability exploits, 
+NVD- National vulnerability database
+
+Shodan,AppScan tool can be used
+
+
+
+
