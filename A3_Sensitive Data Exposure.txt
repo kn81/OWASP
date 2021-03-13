@@ -1,0 +1,61 @@
+Sensitive Data Exposure
+========================
+This vulnerability relates to any access to information by anyone who shouldn’t have access to it such as credentials, credit card details, etc. 
+This includes data rendered in a browser or API response, 
+data in logs and regular backups, and 
+data sent between the client and the server.
+
+OWASP has five excellent recommendations for protecting against this kind of attack:
+
+1) Make sure you encrypt all sensitive data at rest and in transit
+2) Don’t store sensitive data unnecessarily
+3) Ensure strong standard algorithms and strong keys are used, and proper key management is in place
+4) Ensure passwords are stored with an algorithm specifically designed for password protection, such as bcrypt, PBKDF2, or scrypt
+5) Disable autocomplete on forms collecting sensitive data and disable caching for pages that contain sensitive data
+
+What is Sensitive Data Exposure?
+	The first thing you have to determine is which data is sensitive enough to require extra protection. For example:
+
+	Banking information: account numbers, credit card numbers.
+	Health information.
+	Personal information: SSN/SIN, date of birth, etc.
+	User account/passwords.
+
+Causing:
+	Financial loss.
+	Identity hijacking.
+	Decreased brand trust.
+
+SENSITIVE DATA EXPOSURE EXAMPLES
+=======================================
+Example #1: Credit card encryption
+	An application encrypts credit card numbers in a database using automatic database encryption. However,
+	this means it also decrypts this data automatically when retrieved, allowing a SQL injection flaw to retrieve credit card numbers in clear text.
+
+Risk
+	The system should have encrypted the credit card numbers using a public key, 
+	and only allowed back- end applications to decrypt them with the private key.
+
+Example #2: SSL is not used for all authenticated pages
+Risk
+	Attacker simply monitors network traffic (like an open wireless network), and steals the user’s session cookie. 
+	Attacker then replays this cookie and hijacks the user’s session, accessing the user’s private data.
+
+Example #3: The password database uses unsalted hashes to store everyone’s passwords
+Risk
+	A file upload flaw allows an attacker to retrieve the password file. 
+	All of the unsalted hashes can be exposed with a rainbow table of precalculated hashes.
+
+
+
+How to Prevent Sensitive Data Exposure
+=============================================
+	1) Encrypt data during transport and at rest.
+	2) Minimize data surface area.
+	3) Use the latest encrytion algorithms.
+	4) Disable autocomplete on forms that collect data.
+	5) Disable caching on forms that collect data.
+
+Reference
+https://hdivsecurity.com/owasp-sensitive-data-exposure
+
