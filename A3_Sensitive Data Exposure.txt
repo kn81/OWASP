@@ -5,14 +5,6 @@ This includes data rendered in a browser or API response,
 data in logs and regular backups, and 
 data sent between the client and the server.
 
-OWASP has five excellent recommendations for protecting against this kind of attack:
-
-1) Make sure you encrypt all sensitive data at rest and in transit
-2) Don’t store sensitive data unnecessarily
-3) Ensure strong standard algorithms and strong keys are used, and proper key management is in place
-4) Ensure passwords are stored with an algorithm specifically designed for password protection, such as bcrypt, PBKDF2, or scrypt
-5) Disable autocomplete on forms collecting sensitive data and disable caching for pages that contain sensitive data
-
 What is Sensitive Data Exposure?
 	The first thing you have to determine is which data is sensitive enough to require extra protection. For example:
 
@@ -45,7 +37,6 @@ Example #3: The password database uses unsalted hashes to store everyone’s pas
 Risk
 	A file upload flaw allows an attacker to retrieve the password file. 
 	All of the unsalted hashes can be exposed with a rainbow table of precalculated hashes.
-
 
 
 How to Prevent Sensitive Data Exposure
