@@ -9,7 +9,7 @@
    if application is vulnerable to IDOR (INSECURE DIRECT OBJECT REFERENCE)
     https://samplesite.com/deleteProfilePic=128
 	Impact of IDOR vulnerabilities
-	IDOR vulnerabilities seems as ìVARIES DEPENDING ON IMPACTî in Bugcrowd VRT because of their impact totally depend your submitted bug.
+	IDOR vulnerabilities seems as ‚ÄúVARIES DEPENDING ON IMPACT‚Äù in Bugcrowd VRT because of their impact totally depend your submitted bug.
 
 
 2. Directory traversal
@@ -32,10 +32,10 @@ create function MFLAC matrix
 How Do I Prevent 'Missing Function Level Access Control'?
 Your application should have a consistent and easy to analyze authorization module that is invoked from all of your business functions. Frequently, such protection is provided by one or more components external to the application code.
 
-Think about the process for managing entitlements and ensure you can update and audit easily. Donít hard code.
+Think about the process for managing entitlements and ensure you can update and audit easily. Don‚Äôt hard code.
 The enforcement mechanism(s) should deny all access by default, requiring explicit grants to specific roles for access to every function.
 If the function is involved in a workflow, check to make sure the conditions are in the proper state to allow access.
-NOTE: Most web applications donít display links and buttons to unauthorized functions, but this ìpresentation layer access controlî doesnít actually provide protection. You must also implement checks in the controller or business logic.
+NOTE: Most web applications don‚Äôt display links and buttons to unauthorized functions, but this ‚Äúpresentation layer access control‚Äù doesn‚Äôt actually provide protection. You must also implement checks in the controller or business logic.
 
 Example Attack Scenarios
 Scenario #1: The attacker simply force browses to target URLs. The following URLs require authentication. Admin rights are also required for access to the admin_getappInfo page.
@@ -43,12 +43,53 @@ http://example.com/app/getappInfo
 http://example.com/app/admin_getappInfo
 
 
-But we have created a list about IDOR vulnerabilitiesí impacts based on our experience as follows.
-P1 ñ Account takeover, Access very important data (such as credit card)
-P2 ñ Change / delete another usersí public data, Access private / public important data (such as tickets, invoice, payment information)
-P3 ñ Access / delete / change private data (limited personal info: name, adress etc.)
-P4 ñ Access any unimportant data
+But we have created a list about IDOR vulnerabilities‚Äô impacts based on our experience as follows.
+P1 ‚Äì Account takeover, Access very important data (such as credit card)
+P2 ‚Äì Change / delete another users‚Äô public data, Access private / public important data (such as tickets, invoice, payment information)
+P3 ‚Äì Access / delete / change private data (limited personal info: name, adress etc.)
+P4 ‚Äì Access any unimportant data
 
 
+=============   13-03-2021 =========================
+What is Broken Access Control?
+Access control enforces policy such that users cannot act outside of their intended permissions. Failures typically lead to unauthorized information disclosure, modification or destruction of all data, or performing a business function outside of the limits of the user. Common access control vulnerabilities include:
+
+Bypassing access control checks by modifying the URL, internal application state, or the HTML page, or simply using a custom API attack tool
+Allowing the primary key to be changed to another's users record, permitting viewing or editing someone else's account.
+Elevation of privilege. Acting as a user without being logged in, or acting as an admin when logged in as a user.
+Metadata manipulation, such as replaying or tampering with a JSON Web Token (JWT) access control token or a cookie or hidden field manipulated to elevate privileges, or abusing JWT invalidation
+CORS misconfiguration allows unauthorized API access.
+Force browsing to authenticated pages as an unauthenticated user or to privileged pages as a standard user. Accessing API with missing access controls for POST, PUT and DELETE.
+
+BROKEN ACCESS CONTROL EXAMPLES
+Example #1: The application uses unverified data
+The application uses unverified data in a SQL call that is accessing account information:
+
+
+        pstmt.setString(1, request.getParameter("acct"));
+        ResultSet results = pstmt.executeQuery();
+      
+An attacker simply modifies the acct parameter in the browser to send whatever account number they want. If not properly verified, the attacker can access any user's account.
+
+
+        http://example.com/app/accountInfo?acct=notmyacct
+      
+
+Example #2: An attacker simply force browses to target URLs
+Admin rights are required for access to the admin page.
+
+
+        http://example.com/app/getappInfo
+        http://example.com/app/admin_getappInfo
+      
+If an unauthenticated user can access either page, it‚Äôs a flaw. If a non-admin can access the admin page, this is a flaw.
+
+
+How to prevent Broken Access Control
+Access control is only effective if enforced in trusted server-side code or server-less API, where the attacker cannot modify the access control check or metadata.
+
+Deny access to functionality by default.
+Use Access control lists and role-based authentication mechanisms.
+Do not just hide functions.
 
 
