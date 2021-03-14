@@ -1,4 +1,49 @@
 
+=============   13-03-2021 =========================
+What is Broken Access Control?
+Access control enforces policy such that users cannot act outside of their intended permissions. Failures typically lead to unauthorized information disclosure, modification or destruction of all data, or performing a business function outside of the limits of the user. Common access control vulnerabilities include:
+
+Bypassing access control checks by modifying the URL, internal application state, or the HTML page, or simply using a custom API attack tool
+Allowing the primary key to be changed to another's users record, permitting viewing or editing someone else's account.
+Elevation of privilege. Acting as a user without being logged in, or acting as an admin when logged in as a user.
+Metadata manipulation, such as replaying or tampering with a JSON Web Token (JWT) access control token or a cookie or hidden field manipulated to elevate privileges, or abusing JWT invalidation
+CORS misconfiguration allows unauthorized API access.
+Force browsing to authenticated pages as an unauthenticated user or to privileged pages as a standard user. Accessing API with missing access controls for POST, PUT and DELETE.
+
+BROKEN ACCESS CONTROL EXAMPLES
+Example #1: The application uses unverified data
+The application uses unverified data in a SQL call that is accessing account information:
+
+
+        pstmt.setString(1, request.getParameter("acct"));
+        ResultSet results = pstmt.executeQuery();
+      
+An attacker simply modifies the acct parameter in the browser to send whatever account number they want. If not properly verified, the attacker can access any user's account.
+
+
+        http://example.com/app/accountInfo?acct=notmyacct
+      
+
+Example #2: An attacker simply force browses to target URLs
+Admin rights are required for access to the admin page.
+
+
+        http://example.com/app/getappInfo
+        http://example.com/app/admin_getappInfo
+      
+If an unauthenticated user can access either page, it’s a flaw. If a non-admin can access the admin page, this is a flaw.
+
+
+How to prevent Broken Access Control
+Access control is only effective if enforced in trusted server-side code or server-less API, where the attacker cannot modify the access control check or metadata.
+
+Deny access to functionality by default.
+Use Access control lists and role-based authentication mechanisms.
+Do not just hide functions.
+
+
+==================================== Additional Informatio =========================================
+
 1. URL manipulation
    https://samplesite.com/deleteProfilePic=127
 
@@ -48,48 +93,4 @@ P1 – Account takeover, Access very important data (such as credit card)
 P2 – Change / delete another users’ public data, Access private / public important data (such as tickets, invoice, payment information)
 P3 – Access / delete / change private data (limited personal info: name, adress etc.)
 P4 – Access any unimportant data
-
-
-=============   13-03-2021 =========================
-What is Broken Access Control?
-Access control enforces policy such that users cannot act outside of their intended permissions. Failures typically lead to unauthorized information disclosure, modification or destruction of all data, or performing a business function outside of the limits of the user. Common access control vulnerabilities include:
-
-Bypassing access control checks by modifying the URL, internal application state, or the HTML page, or simply using a custom API attack tool
-Allowing the primary key to be changed to another's users record, permitting viewing or editing someone else's account.
-Elevation of privilege. Acting as a user without being logged in, or acting as an admin when logged in as a user.
-Metadata manipulation, such as replaying or tampering with a JSON Web Token (JWT) access control token or a cookie or hidden field manipulated to elevate privileges, or abusing JWT invalidation
-CORS misconfiguration allows unauthorized API access.
-Force browsing to authenticated pages as an unauthenticated user or to privileged pages as a standard user. Accessing API with missing access controls for POST, PUT and DELETE.
-
-BROKEN ACCESS CONTROL EXAMPLES
-Example #1: The application uses unverified data
-The application uses unverified data in a SQL call that is accessing account information:
-
-
-        pstmt.setString(1, request.getParameter("acct"));
-        ResultSet results = pstmt.executeQuery();
-      
-An attacker simply modifies the acct parameter in the browser to send whatever account number they want. If not properly verified, the attacker can access any user's account.
-
-
-        http://example.com/app/accountInfo?acct=notmyacct
-      
-
-Example #2: An attacker simply force browses to target URLs
-Admin rights are required for access to the admin page.
-
-
-        http://example.com/app/getappInfo
-        http://example.com/app/admin_getappInfo
-      
-If an unauthenticated user can access either page, it’s a flaw. If a non-admin can access the admin page, this is a flaw.
-
-
-How to prevent Broken Access Control
-Access control is only effective if enforced in trusted server-side code or server-less API, where the attacker cannot modify the access control check or metadata.
-
-Deny access to functionality by default.
-Use Access control lists and role-based authentication mechanisms.
-Do not just hide functions.
-
 
