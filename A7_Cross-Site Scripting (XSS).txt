@@ -30,39 +30,41 @@ Reflected attack what can it do?
 2. Steal cookie information
 3. Force the user to make an action
 
-javascript:document.querySelectorAll('.Upvote').forEach((b)=>{if(b.getAttribute('action_target') == '{"aid": 49528370, "type": "answer"}'){b.click()}})
+    javascript:document.querySelectorAll('.Upvote').forEach((b)=>{if(b.getAttribute('action_target') == '{"aid": 49528370, "type": "answer"}'){b.click()}})
+
 
 
 Stored cross-site scripting
-------------------------------
+===============================
 Stored XSS (also known as persistent or second-order XSS) arises when an application receives data from an untrusted source and 
 includes that data within its later HTTP responses in an unsafe way.
 
 for example, comments on a blog post, user nicknames in a chat room, or contact details on a customer order.
 
 Here is a simple example of a stored XSS vulnerability. A message board application lets users submit messages, which are displayed to other users:
-
-<p>Hello, this is my message!</p>
+            <p>Hello, this is my message!</p>
 
 The application doesn't perform any other processing of the data, so an attacker can easily send a message that attacks other users:
+            <p><script>/* Bad stuff here... */</script></p>
 
-<p><script>/* Bad stuff here... */</script></p>
+
 
 DOM-based cross-site scripting
--------------------------------------
+==================================
 DOM-based XSS (also known as DOM XSS) arises when an application contains some client-side JavaScript that processes data from an untrusted source in an unsafe way, usually by writing the data back to the DOM.
 
 In the following example, an application uses some JavaScript to read the value from an input field and write that value to an element within the HTML:
-
-var search = document.getElementById('search').value;
-var results = document.getElementById('results');
-results.innerHTML = 'You searched for: ' + search;
+                var search = document.getElementById('search').value;
+                var results = document.getElementById('results');
+                results.innerHTML = 'You searched for: ' + search;
 
 If the attacker can control the value of the input field, they can easily construct a malicious value that causes their own script to execute:
-
-You searched for: <img src=1 onerror='/* Bad stuff here... */'>
+                You searched for: <img src=1 onerror='/* Bad stuff here... */'>
 
 In a typical case, the input field would be populated from part of the HTTP request, such as a URL query string parameter, allowing the attacker to deliver an attack using a malicious URL, in the same manner as reflected XSS.
+
+
+
 
 What can XSS be used for?
 ---------------------------
@@ -185,21 +187,20 @@ The <object> tag can be used to include a script from an external site.
 CROSS-SITE SCRIPTING ATTACK EXAMPLE
 -----------------------------------------
 The most common example of XSS is a basic coded search engine for a website. The site search script is in this format:
-
-http://www.vulnerablewebsite.com/search/query?q=Hdiv%20XSS
-Once something has been searched for, the script displays on the webpage something along the lines of:
+            http://www.vulnerablewebsite.com/search/query?q=Hdiv%20XSS
+            Once something has been searched for, the script displays on the webpage something along the lines of:
 
 "Results for Hdiv XSS here"
 Simply displaying the search string straight onto the webpage without performing any validation checks. An attacker could insert a script and if no sanitation checks are being performed, this will just be displayed straight onto the webpage. This could be used to display anything the attacker wants.
-
-http://www.vulnerablewebsite.com/search/query?q=<script>alert("Hdiv XSS");</script>
+            http://www.vulnerablewebsite.com/search/query?q=<script>alert("Hdiv XSS");</script>
 
 
 How to prevent XSS attacks
 ------------------------------------
 In general, effectively preventing XSS vulnerabilities is likely to involve a combination of the following measures:
 
-1) Filter input on arrival. At the point where user input is received, filter as strictly as possible based on what is expected or valid input.
+1) Filter input on arrival. At the point where user input is received, filter as strictly as possible based on what is expected 
+    or valid input.
 2) Encode data on output. At the point where user-controllable data is output in HTTP responses, encode the output to prevent it from being interpreted as active content. Depending on the output context, this might require applying combinations of HTML, URL, JavaScript, and CSS encoding.
 
 3) Use appropriate response headers. To prevent XSS in HTTP responses that aren't intended to contain any HTML or JavaScript, you can use the Content-Type and X-Content-Type-Options headers to ensure that browsers interpret the responses in the way you intend.
