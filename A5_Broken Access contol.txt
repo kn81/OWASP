@@ -24,6 +24,8 @@ Common access control vulnerabilities include:
 6) Force browsing to authenticated pages as an unauthenticated user or to privileged pages as a standard user. 
 	Accessing API with missing access controls for POST, PUT and DELETE.
 
+[Note: CORS Misconfiguration Leads To Steal Sensitive Information Disclosure. ... Cross-origin resource sharing (CORS) is a browser mechanism which enables controlled access to resources located outside of a given domain. It extends and adds flexibility to the same-origin policy]
+
 BROKEN ACCESS CONTROL EXAMPLES
 -----------------------------------
 Example #1: The application uses unverified data
