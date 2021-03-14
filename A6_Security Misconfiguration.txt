@@ -1,18 +1,49 @@
-what is it?
+What is Security Misconfiguration?
+    Security Misconfiguration is simply defined as failing to implement all the security controls for a server or web application,
+    or implementing the security controls, but doing so with errors
+    
+    Improper server or web application configuration leading to various flaws:
 
-Improper server or application configuration leading to various flaws
-1. Debugging enabled
-2. Incorrect folder permissions
-3. Using default accounts or passwords
-4. Setup configuration pages enabled
+  1) Debugging enabled.
+  2) Incorrect folder permissions.
+  3) Using default accounts or passwords.
+  4) Setup/Configuration pages enabled.
 
-Counter measures
-The principle of least privilige Everything off by default
-Ensure that web server is configured according to the secure configuration & hardening guidelines
-1. Disable communication channels
-2. Disable debugging
-3. Disable use of default accounts/ passwords
-4. Configure server to prevent unauthorised access directory using ETC
+
+SECURITY MISCONFIGURATION EXAMPLES
+-----------------------------------
+Example #1: The app server admin console is automatically installed and not removed
+Default accounts are not changed.
+
+Risk
+
+Attacker discovers the standard admin pages are on your server, logs in with default passwords, and takes over.
+Example #2: Directory listing is not disabled on your server
+Risk
+
+Attacker discovers they can simply list directories to find any file. Attacker finds and downloads all your compiled Java classes, which they decompile and reverse engineer to get all your custom code. They then find a serious access control flaw in your application.
+Example #3: App server configuration allows stack traces to be returned to users, potentially exposing underlying flaws
+Risk
+
+Attackers love the extra information error messages provide.
+Example #4: App server comes with sample applications that are not removed from your production server
+Risk
+
+These sample applications have well-known security flaws attackers can use to compromise your server.
+
+How to Prevent Security Misconfiguration
+----------------------------------------------
+  1) The principle of least privilege: Everything off by default.
+  2) Disable administration interfaces.
+  3) Disable debugging.
+  4) Disable use of default accounts/passwords.
+  5) Configure server to prevent unauthorized access, directory listing, etc.
+  6) Consider running scans and doing audits periodically to help detect future misconfigurations or missing patches.
+
+Reference: https://hdivsecurity.com/owasp-security-misconfiguration
+
+
+==============================================================================================================================
 
 security derectives->HSTS, H PKP X-Frames options to arden security misconfigurations
 
