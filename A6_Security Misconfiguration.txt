@@ -15,20 +15,18 @@ SECURITY MISCONFIGURATION EXAMPLES
 Example #1: The app server admin console is automatically installed and not removed
 Default accounts are not changed.
 
-Risk
+Risk-> Attacker discovers the standard admin pages are on your server, logs in with default passwords, and takes over.
 
-Attacker discovers the standard admin pages are on your server, logs in with default passwords, and takes over.
 Example #2: Directory listing is not disabled on your server
-Risk
-
+Risk-> 
 Attacker discovers they can simply list directories to find any file. Attacker finds and downloads all your compiled Java classes, which they decompile and reverse engineer to get all your custom code. They then find a serious access control flaw in your application.
+
 Example #3: App server configuration allows stack traces to be returned to users, potentially exposing underlying flaws
-Risk
-
+Risk ->
 Attackers love the extra information error messages provide.
-Example #4: App server comes with sample applications that are not removed from your production server
-Risk
 
+Example #4: App server comes with sample applications that are not removed from your production server
+Risk->
 These sample applications have well-known security flaws attackers can use to compromise your server.
 
 How to Prevent Security Misconfiguration
